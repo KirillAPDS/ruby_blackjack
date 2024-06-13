@@ -18,10 +18,10 @@ class Player
   end
 
   def show_cards(name, open=true) # скрыть карты дилера и показать карты юзера
-    return puts "#{name} cards - #{cards.map { '*' }.join(' ')}" if open == false
+    return puts "#{name}'s cards - #{cards.map { '*' }.join(' ')}" if open == false
 
     current_cards = cards.map { |card| "#{card.value}#{card.suit}" }.join(' ')
-    puts "#{name} cards - #{current_cards}"
+    puts "#{name}'s cards - #{current_cards}"
     # todo
   end
 
