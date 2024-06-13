@@ -7,21 +7,41 @@ class Main
   attr_accessor :bank
 
   MENU = [
-    '1 - пропустить',
-    '2 - добавить карту',
-    '3 - открыть карты'
+    '1 - skip',
+    '2 - add a card',
+    '3 - open cards'
   ]
 
   def initialize
-    puts 'Введите ваше имя'
+    puts 'Input your name'
     @name = gets.chomp
     @user = Player.new(@name)
-    @dealer = Player.new('Дилер')
+    @dealer = Player.new('Dealer')
     @deck = Deck.new
     @bank = 0
   end
   
-  def define_winner 
+  def define_winner
+    # показываем карты игроков и счет
+    user.show_cards(user.name)
+    dealer.show_cards(dealer.name)
+    score(user)
+    score(dealer)
+
+    # проверяем условия выигрыша и ничьей
+    if user.score == dealer.score || (user.score > 21 && dealer.score > 21)
+      puts 'draw'
+      user.cash += 10 # возвращаем из банка по 10 каждому игроку
+      dealer.cash += 10
+    elsif user.score > 21 || (user.score < dealer.score && dealer.score <= 21)
+      puts "#{dealer.name} win"
+      dealer.cash += self.bank
+    else
+      puts "#{user.name} win"
+      user.cash += self.bank
+    end
+
+    self.bank = 0 # обнуляем банк
     # todo
   end
 
@@ -34,6 +54,8 @@ class Main
       # показываем карты игроков
       user.show_cards(user.name)
       dealer.show_cards(dealer.name, false)
+
+      score(user) # счет юзера
       # выбор действия
       puts MENU
       choice = gets.chomp.to_i
@@ -44,10 +66,9 @@ class Main
         dealer_move
       when 3 # открываем карты. дилер при этом может сделать ход
         dealer_move
-        score(user) # показываем счет 
-        score(dealer)
+        score(user) # счет юзера
+        score(dealer) # счет дилера
       end
-      
     end
     # определяем победителя и обнуляем карты игроков
     define_winner
@@ -57,7 +78,7 @@ class Main
   end
 
   def score(player)
-    puts "#{player.name}: #{player.score} очков"
+    puts "#{player.name}: #{player.score} points"
   end
 
   def take_card(player, count = 1)
