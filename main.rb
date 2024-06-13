@@ -36,10 +36,13 @@ class Main
     count.times do
       player.cards << deck.take_card
     end
-    # todo
   end
 
   def run
     # todo
+  end
+
+  def dealer_move
+    take_card(dealer) if dealer.score < 17 || dealer.cards.size < 3
   end
 end
