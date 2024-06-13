@@ -12,6 +12,11 @@ class Main
     '3 - open cards'
   ]
 
+  CONTINUE = [
+    '1 - play again',
+    '0 - exit'
+  ]
+
   def initialize
     puts 'Input your name'
     @name = gets.chomp
@@ -34,10 +39,10 @@ class Main
       user.cash += 10 # возвращаем из банка по 10 каждому игроку
       dealer.cash += 10
     elsif user.score > 21 || (user.score < dealer.score && dealer.score <= 21)
-      puts "#{dealer.name} win"
+      puts "#{dealer.name} won"
       dealer.cash += self.bank
     else
-      puts "#{user.name} win"
+      puts "#{user.name} won"
       user.cash += self.bank
     end
 
@@ -81,13 +86,33 @@ class Main
     puts "#{player.name}: #{player.score} points"
   end
 
+  def cash(player)
+    puts "#{player.name}'s cash: #{player.cash}"
+  end
+
   def take_card(player, count = 1)
     count.times do
       player.cards << deck.take_card
     end
   end
 
-  def run
+  def play # игровой цикл
+    loop do
+      # принимаем ставки и увеличиваем банк
+      user.bet
+      dealer.bet
+      self.bank += 20
+
+      # запускаем раунд
+      round
+      # показываем финансовый итог раунда
+      cash(user)
+      cash(dealer)
+
+      puts CONTINUE
+      choice = gets.chomp.to_i
+      break if choice.zero?
+    end
     # todo
   end
 
