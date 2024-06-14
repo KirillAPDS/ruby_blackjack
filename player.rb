@@ -25,7 +25,18 @@ class Player
     # todo
   end
 
-  def score 
+  def score
+    score = 0
+
+    cards.each do |card|
+      if card.value == 'A'
+        score += (score < 11 ? 11 : 1)
+      else
+        score += (card.value.to_i.zero? ? 10 : card.value)
+      end
+
+    end
+    score
   	# todo
   end
 end
