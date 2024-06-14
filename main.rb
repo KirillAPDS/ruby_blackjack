@@ -69,10 +69,12 @@ class Main
       when 2 # добавляем карту себе и дилеру
         take_card(user) # if user.cards.size < 3
         dealer_move
+        break
       when 3 # открываем карты. дилер при этом может сделать ход
         dealer_move
         score(user) # счет юзера
         score(dealer) # счет дилера
+        break
       end
     end
     # определяем победителя и обнуляем карты игроков
@@ -120,3 +122,6 @@ class Main
     take_card(dealer) if dealer.score < 17 || dealer.cards.size < 3
   end
 end
+
+game = Main.new
+game.play
