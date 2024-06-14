@@ -101,6 +101,8 @@ class Main
   def play # игровой цикл
     loop do
       # принимаем ставки и увеличиваем банк
+      return 'not enough cash' if user.cash.zero? || dealer.cash.zero?
+
       user.bet
       dealer.bet
       self.bank += 20
