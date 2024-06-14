@@ -66,12 +66,12 @@ class Main
       choice = gets.chomp.to_i
       case choice
       when 1 then dealer_move # пропускаем ход, ход дилера
-      when 2 # добавляем карту себе и дилеру
-        take_card(user) # if user.cards.size < 3
+      when 2 # добавляем карту себе и ход переходит дилеру
+        take_card(user) if user.cards.size < 3
         dealer_move
         break
-      when 3 # открываем карты. дилер при этом может сделать ход
-        dealer_move
+      when 3 # открываем карты
+        # dealer_move
         score(user) # счет юзера
         score(dealer) # счет дилера
         break
@@ -121,7 +121,14 @@ class Main
   end
 
   def dealer_move
-    take_card(dealer) if dealer.score < 17 || dealer.cards.size < 3
+    # - Пропустить ход (если очков у дилера 17 или более). Ход переходит игроку. 
+    # - Добавить карту (если очков менее 17). 
+    # У дилера появляется новая карта (для пользователя закрыта). 
+    # После этого ход переходит игроку. 
+    # Может быть добавлена только одна карта.
+    return if dealer.score >= 17 || dealer.cards.size == 3
+
+    take_card(dealer) if dealer.score < 17 && dealer.cards.size < 3
   end
 end
 
