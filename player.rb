@@ -3,6 +3,7 @@ class Player
   attr_reader :name
 
   def initialize(name)
+    @name = name
     @cash = 100
     @cards = []
   end
@@ -26,17 +27,19 @@ class Player
   end
 
   def score
-    score = 0
+    return 0 unless cards.size.positive?
+
+    pips = 0
 
     cards.each do |card|
       if card.value == 'A'
-        score += (score < 11 ? 11 : 1)
+        pips += (pips < 11 ? 11 : 1)
       else
-        score += (card.value.to_i.zero? ? 10 : card.value)
+        pips += (card.value.to_i.zero? ? 10 : card.value)
       end
 
     end
-    score
+    pips
   	# todo
   end
 end
